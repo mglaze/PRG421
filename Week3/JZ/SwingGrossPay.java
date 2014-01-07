@@ -16,7 +16,7 @@ public class SwingGrossPay extends JFrame implements ActionListener
 {
 	JTextField grosspayField, totdeductField, incometaxField, overtimePay;
 	JButton calcButton;
-        JButton clearButton;
+    JButton clearButton;
 
 	public SwingGrossPay()
 	{

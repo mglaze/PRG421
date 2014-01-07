@@ -87,6 +87,5 @@ public class PizzaListPlus extends JFrame implements ActionListener{
         frame.pack();
         frame.setLocation(300,330);
         frame.setVisible(true);
-
     }
 } // end of the PizzaListPlus class.

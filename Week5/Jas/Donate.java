@@ -22,7 +22,11 @@ import javax.imageio.*;
 
 	After hitting submit, the information entered
 	should display on the TextArea field.
+
+	At a minimum, the name field should not be 
+	blank and the amount field should be numeric.
 **/
+
 public class Donate extends JFrame implements ActionListener
 {
 	//Background Image
@@ -37,11 +41,13 @@ public class Donate extends JFrame implements ActionListener
 	//Define TextFields and TextArea
 	JTextField myNameField = new JTextField();
 	JTextField myAddressField = new JTextField();
-	JTextField myPhoneField = new JTextField();
+	JTextField myPhoneField = new JTextField(11);
 	JTextField donationAmountField = new JTextField();
 	JTextField emailAddressField = new JTextField();
 	JTextArea textArea = new JTextArea("Your Donation Details", 3,30);
 	JScrollPane myScrollPane = new JScrollPane(textArea);
+	int donationAmount;
+	String phoneNumber;
 
 	//Define buttons for submit and clear
 	JButton submitButton = new JButton("SUBMIT");
@@ -51,18 +57,24 @@ public class Donate extends JFrame implements ActionListener
 	String[] charityList = { "", " Red Cross", " UnitedWay", " UNICEF", " Salvation Army", " Habitat For Humanity"};
 	JComboBox comboBox = new JComboBox<String>(charityList);
 
-	Donate(){
+	Donate()
+	{
 
 		mainPanel.setLayout(new BorderLayout()); //Layout for frame
 
 		//CONFIG DONOR PANEL
 		donorPanel.setLayout(new GridLayout(6, 1));
+		
 		donorPanel.add(new JLabel ("Full Name: "));
 		donorPanel.add(myNameField);
+		myNameField.addActionListener(this);
+
 		donorPanel.add(new JLabel ("Address: "));
 		donorPanel.add(myAddressField);
 		donorPanel.add(new JLabel ("Phone Number: "));
 		donorPanel.add(myPhoneField);
+		myPhoneField.addActionListener(this);
+
 		donorPanel.add(new JLabel ("Select Your Charity: "));
 		donorPanel.add(comboBox);
 		donorPanel.add(new JLabel ("Enter Donation Amount: "));
@@ -76,7 +88,8 @@ public class Donate extends JFrame implements ActionListener
 		textArea.setEditable(false);
 		textPanel.add(textArea); // add text area to textPanel
 		mainPanel.add(textPanel, BorderLayout.EAST);
-		myScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		myScrollPane.setVerticalScrollBarPolicy(
+			JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		textArea.setEditable(false);
 
 		//CONFIGURE BUTTON PANEL
@@ -90,122 +103,73 @@ public class Donate extends JFrame implements ActionListener
 		add(mainPanel); //Add mainPanel to the frame
 		mainPanel.add(background); //Add background image to mainPanel
 	}
-	public void actionPerformed(ActionEvent e) {
-		String donorName = myNameField.getText();
-		boolean invalidNumber = false;
-
-		/**************** INSTRUCTIONS FOR ADDING YOUR PORTIONS BELOW
-
-			Add append actions for text fields and buttons below the first try.
-
-			***See the example code starting on line 147:
-
-			The example code checks for a donorName in the myNameField
-			If the myNameField is empty an error will appear.
-
-			To add your text to the text field you will use the "append"
-			method. See Lines 74-76 in the "PizzaListPlus.java" file Ms.
-			Rosa uploaded to guide you on how to write the exception.***
-
-			~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-			***JOE***
-
-			The myNameField is somewhat covered because I needed
-			to write an example for everyone to follow. You will need
-			to double check the myNameField and make sure the exception
-			displays properly after everyone else adds exceptions. For
-			example, no name the error should appear, "Please enter a name"
-			attempting to add characters in a numeric field should return
-			a different error.
-
-			***JASPAL***
-
-			Please enter the code to differentiate the actions for SUBMIT
-			and CLEAR. Right now the code is listening for the submit
-			action and then the form clears automatically.
-
-			***SHANNON***
-
-			For the phone number field you can try restricting
-			the myPhoneField to 10 digits and then write the exception
-			to only allow 10 digits below. See Lines 56-58 in the
-			"PizzaListPlus.java" file Ms. Rosa uploaded to guide you on
-			how to write the exception.
-
-			***BRUCE***
-
-			For the donation field you will need to restrict the
-			donationAmountField to allow for numeric entries only. See
-			Lines 56-58 in the "PizzaListPlus.java" file Ms. Rosa uploaded
-			to guide you on how to write the exception.
-
-			***JULIAN***
-
-			If you'd like you can add an exception that checks
-			for content in the address field.
-
-		*****************/
-		try
-		{
-
-		}
-
-		catch (NumberFormatException ne)
-		{
-			invalidNumber = true;
-		}
-		if (donorName.length() == 0 || comboBox.getSelectedIndex() == 0 || invalidNumber)
-		{
-			JOptionPane.showMessageDialog(null, "Please enter your name.");
-
-		}
-		else
-		{
-
-		}
-
-		/* JASPAL
-			Add actions for SUBMIT & CLEAR Buttons Here
-		*/
-		//Create actions for both buttons action.
-
+	public void actionPerformed(ActionEvent e) 
 	{
-		if (e.getSource() == submitButton)
+		String donorName = myNameField.getText();
+		String myAddress = myAddressField.getText(); //.......................Added myAddressField to get text
+		String emailAddress= emailAddressField.getText(); //..................Added emailAddressField to get text
 
-		//process the submitbutton (Write Jtextfields to textArea and clear fields
-		textArea.append("\n" + myNameField.getText()
-		+ "\n" + myAddressField.getText()
-		+ "\n" + myPhoneField.getText()
-		+ "\n" + comboBox.getSelectedItem()
-		+ "\n" + donationAmountField.getText()
-		+ "\n" + emailAddressField.getText());
+		if (e.getSource() == submitButton) //actions performed when submit button is pressed.
+		{
 
+			try
+			{
+				donationAmount = Integer.parseInt(donationAmountField.getText());
+					
+				
 
-		if (e.getSource() == clearButton)
-					{
-		//process the clearButton
-		myNameField.setText("");
-		myAddressField.setText("");
-		myPhoneField.setText("");
-		donationAmountField.setText("");
-		emailAddressField.setText("");
-		textArea.setText("");
-		comboBox.setSelectedIndex(0);
+				if(donorName.length() == 0) //Name must be great than zero 
+				{
+					JOptionPane.showMessageDialog(null, "Please enter your name.");
+				}
 
-
+				if (myAddress.length() == 0) //....................To Assure Address Is Inputed
+        		{
+            		JOptionPane.showMessageDialog(null, "Make Sure You Type In An Address."); //............Stated That The Address Should Have Something
+        		}//end if
+     			if (emailAddress.length() == 0) //....................To Assure Email Is Inputed
+		    	{
+		    		JOptionPane.showMessageDialog(null, "Make Sure You Type In An Email."); //............Stated That The Email Should Have Something
+        		}//end if
+        		else
+        		{
+        			//textArea output goes here.
+        			textArea.append("\n" + "\n" + " NAME: " + myNameField.getText()
+					+ "\n" + " ADDRESS: " + myAddressField.getText()
+					+ "\n" + " PHONE: " + myPhoneField.getText()
+					+ "\n" + " EMAIL ADDRESS: " + emailAddressField.getText()
+					+ "\n" + " CHARITY: " + comboBox.getSelectedItem()
+					+ "\n" + " DONATION TOTAL: " + "$"+ donationAmountField.getText());
+        		}
+			}
+			catch ( NumberFormatException ne)
+			{
+				JOptionPane.showMessageDialog(null, "Donation amount must be numeric.");
+			}
+			
 		}
+		if (e.getSource() == clearButton)
+		{
+			//process the clearButton
+			myNameField.setText("");
+			myAddressField.setText("");
+			myPhoneField.setText("");
+			donationAmountField.setText("");
+			emailAddressField.setText("");
+			textArea.setText("");
+			comboBox.setSelectedIndex(0);
+		}
+		
   	} //end of actionPerformed
-}
-	public static void main(String[] args) {
-		//Setting frame size and behavior
-		Donate frame = new Donate();
-			frame.setTitle("'Tis the Season for Giving!");
-    		frame.setSize(900, 300);
-    		frame.setResizable(false);
-    		frame.setLocationRelativeTo(null);
-    		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    		frame.setVisible(true);
-	}
 
-}
+	public static void main(String[] args) {
+		Donate frame = new Donate(); //Setting frame size and behavior
+		frame.setTitle("'Tis the Season for Giving!");
+    	frame.setSize(900, 300);
+    	frame.setResizable(false);
+    	frame.setLocationRelativeTo(null);
+    	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	frame.setVisible(true);
+	}// end public static void
+
+}// end Donate class
